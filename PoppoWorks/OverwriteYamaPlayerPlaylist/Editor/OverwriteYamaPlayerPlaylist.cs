@@ -60,6 +60,7 @@ public sealed class OverwriteYamaPlayerPlaylistWindow : EditorWindow
     private readonly List<PlayerItem> _players = new List<PlayerItem>();
     private readonly List<string> _lastErrors = new List<string>();
     private Vector2 _scrollPosition;
+    private Vector2 _jsonSummaryScrollPosition;
     private string _jsonFilePath = string.Empty;
     private string _searchText = string.Empty;
     private List<ImportedPlaylist> _importedPlaylists;
@@ -193,12 +194,19 @@ public sealed class OverwriteYamaPlayerPlaylistWindow : EditorWindow
 
             using (new EditorGUILayout.VerticalScope(GUI.skin.box))
             {
+                _jsonSummaryScrollPosition = EditorGUILayout.BeginScrollView(
+                    _jsonSummaryScrollPosition,
+                    GUILayout.MinHeight(80f),
+                    GUILayout.MaxHeight(220f));
+
                 foreach (ImportedPlaylist playlist in _importedPlaylists)
                 {
                     int trackCount = playlist?.Tracks?.Count ?? 0;
                     string playlistName = string.IsNullOrEmpty(playlist?.Name) ? "(Unnamed Playlist)" : playlist.Name;
                     EditorGUILayout.LabelField($"{playlistName}  ({trackCount} tracks)", EditorStyles.miniLabel);
                 }
+
+                EditorGUILayout.EndScrollView();
             }
         }
     }
